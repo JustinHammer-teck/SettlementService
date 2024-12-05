@@ -1,19 +1,16 @@
 # Settlement Service
 
-## Requisite
-- Dotnet 9.0
+## Prerequisites
+- Dotnet 9.0 SDK 
+- nix | nix-darwin (Optional, if you want to run nix-shell)
+- docker $ docker compose (Optional, if you want to run with SEQ)
+- just (Optional, if you want to run automate task)
 
-## Nix Shell for Dev environment
-
-Nix allows for a reproductable development environment and declarative
-
-## NOTE: 
-
-### Strongly Type GUID & GUIDV7
+## Implementation Note: 
 
 ### Auth
 I didn't implement Auth since we would use a library like Auth0 or Azure AD to make authenticate and authorize
 
-### Delta
-I use this package to reduce IO to database by caching the response in the client side that reuse the response if the 
-data is not change by measure the header 
+### Caching
+I didn't implement Caching which is a necessary in real-world application.
+Since in this example we didn't focus on the retrieval of data in the application.

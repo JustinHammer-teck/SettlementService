@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using SettlementService.Application.Common.Interfaces;
 using SettlementService.Domain.Entities;
 
@@ -17,4 +18,6 @@ internal sealed class ApplicationDbContext : DbContext, IApplicationDbContenxt
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
+    
+    
 }

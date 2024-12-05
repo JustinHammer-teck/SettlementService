@@ -17,14 +17,17 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .IsRequired()
             .HasConversion(
                 guid => guid.Value, guid => new BookingId(guid));
+
         builder.Property(s => s.Name)
             .HasConversion(
-                name => NameTypeToString(name), name => StringToNameType(name))
-            .HasColumnType("varchar(50)");
+                name => NameTypeToString(name), name => FullName.Create(name))
+            .HasColumnType("varchar(50)")
+            .IsRequired();
         
         builder.Property(b => b.BookingTime)
-            .HasConversion(time => TimeTypeToString(time), time => StringToTimeType(time)
-            ).IsRequired();
+            .HasConversion(
+                time => TimeTypeToString(time), time => StringToTimeType(time))
+            .IsRequired();
     }
     
     private string TimeTypeToString(TimeType timeType) =>
@@ -51,19 +54,10 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         return result ?? throw new ArgumentException($"Unsupported time format for time of value : {time}"); 
     }
 
-    private NameType StringToNameType(string fullName) =>
-        fullName.Split(" ") switch
-        {
-            [var firstName, var lastName] => FullName.Create(firstName, lastName),
-            [var name] => MononymName.Create(name), 
-            _ => throw new ArgumentException($"Invalid Format of full name")
-        };
-
     private string NameTypeToString(NameType nameType) =>
         nameType switch
         {
             FullName fullName => $"{fullName.FirstName} {fullName.LastName}",
-            MononymName name => $"{name}",
             _ => throw new ArgumentException($"Unsupported Name Type of type: {nameType}")
         };
 }

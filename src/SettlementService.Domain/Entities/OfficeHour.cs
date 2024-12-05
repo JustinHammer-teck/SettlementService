@@ -1,3 +1,4 @@
+using SettlementService.Domain.Constants;
 using SettlementService.Domain.ValueObjects;
 
 namespace SettlementService.Domain.Entities;
@@ -7,16 +8,17 @@ public class OfficeHour
     public TimeType StartTime { get; private set; }
     public TimeType EndTime { get; private set; }
 
-    protected OfficeHour()
+    public OfficeHour()
     {
-        StartTime = new MilitaryTime(new TimeOnly(9, 0));
-        EndTime = new MilitaryTime(new TimeOnly(17, 0));
+        StartTime = MilitaryTime.Create(new TimeOnly(9, 0));
+        EndTime = MilitaryTime.Create(new TimeOnly(17, 0));
     }
-
+   
     public void UpdateHours(TimeType startTime, TimeType endTime)
     {
-        if (startTime >= endTime && Time.IsOneHourDifference(endTime, startTime))
-            throw new ArgumentException("Start time must be earlier than end time.");
+        if (startTime >= endTime && 
+            endTime.IsDurationDifference(startTime, SettlementOptions.ReserveDuration))
+            throw new ArgumentException("Office Hour should be valid");
 
         StartTime = startTime;
         EndTime = endTime;
@@ -26,7 +28,6 @@ public class OfficeHour
 public class BookingAvailableHour : OfficeHour
 {
     private readonly OfficeHour _officeHour;
-
     public TimeType StartTime { get; private set; }
     public TimeType EndTime { get; private set; }
 
@@ -43,7 +44,8 @@ public class BookingAvailableHour : OfficeHour
     private bool IsValidHours(TimeType startTime, TimeType endTime) =>
         startTime >= new TimeOnly(9, 00) &&
         endTime <= new TimeOnly(16, 00) &&
-        Time.IsOneHourDifference(endTime, startTime);
+        endTime.IsDurationDifference(startTime, SettlementOptions.ReserveDuration);
+    
     public void UpdateHours(TimeType startTime, TimeType endTime)
     {
         if (IsValidHours(startTime,endTime))

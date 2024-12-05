@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SettlementService.Application.Common.BehaviorPipeline;
+using SettlementService.Application.Services.Time;
 using SettlementService.Domain.Entities;
 
 namespace SettlementService.Application;
@@ -16,6 +17,8 @@ public static class ApplicationConfiguration
       builder.Services.AddSingleton<OfficeHour>();
       builder.Services.AddSingleton<BookingAvailableHour>();
 
+      builder.Services.AddScoped<TimeValidationService>();
+      
       builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
       builder.Services.AddMediatR(config =>
       {

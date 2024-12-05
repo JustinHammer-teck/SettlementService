@@ -7,5 +7,7 @@ namespace SettlementService.Api.Controllers;
 [Route("api/[controller]")]
 public abstract class ApiControllerBase : ControllerBase
 {
-   public IMediator _mediator;
+   public ISender _mediator;
+   
+   protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
 }

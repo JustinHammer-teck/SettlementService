@@ -11,7 +11,7 @@ using SettlementService.Infrastructure.Persistent;
 namespace SettlementService.Infrastructure.Persistent.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241204162041_initialize")]
+    [Migration("20241205114514_initialize")]
     partial class initialize
     {
         /// <inheritdoc />
