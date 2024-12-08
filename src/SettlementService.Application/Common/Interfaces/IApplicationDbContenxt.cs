@@ -5,7 +5,7 @@ namespace SettlementService.Application.Common.Interfaces;
 
 public interface IApplicationDbContenxt
 {
-   DbSet<Booking> Bookings { get; set; }
+    DbSet<Booking> Bookings { get; set; }
 
-   Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

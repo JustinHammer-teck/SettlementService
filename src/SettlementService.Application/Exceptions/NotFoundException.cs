@@ -2,8 +2,8 @@ namespace SettlementService.Application.Exceptions;
 
 public class NotFoundException : Exception
 {
-    public NotFoundException() : 
+    public NotFoundException() :
         base("Unable to found the requested resource")
     {
-    } 
+    }
 }

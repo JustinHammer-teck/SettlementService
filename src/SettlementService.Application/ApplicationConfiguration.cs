@@ -10,17 +10,16 @@ namespace SettlementService.Application;
 
 public static class ApplicationConfiguration
 {
-   public static void AddApplication(this IHostApplicationBuilder builder)
-   {
-         
-      builder.Services.AddSingleton<OfficeHour>();
-      builder.Services.AddSingleton<BookingAvailableHour>();
+    public static void AddApplication(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<OfficeHour>();
+        builder.Services.AddSingleton<BookingAvailableHour>();
 
-      builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-      builder.Services.AddMediatR(config =>
-      {
-         config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-         config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-      });
-   }
+        builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.Services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+        });
+    }
 }

@@ -5,5 +5,7 @@ namespace SettlementService.Application.Extensions;
 public static class BookingList
 {
     public static SettlementPool ToSettlementPool(this IEnumerable<Booking> bookings)
-        => new (bookings);
+    {
+        return new SettlementPool(bookings);
+    }
 }

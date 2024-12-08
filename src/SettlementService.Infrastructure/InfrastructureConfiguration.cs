@@ -11,9 +11,8 @@ public static class InfrastructureConfiguration
 {
     public static void AddInfrastructureConfiguration(this IHostApplicationBuilder builder)
     {
-         
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
         builder.Services.AddScoped<IApplicationDbContenxt, ApplicationDbContext>();
     }

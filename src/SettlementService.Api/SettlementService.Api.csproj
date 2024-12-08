@@ -9,15 +9,15 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="OpenTelemetry" Version="1.10.0" />
+        <PackageReference Include="OpenTelemetry" Version="1.10.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SettlementService.Application\SettlementService.Application.csproj" />
-      <ProjectReference Include="..\SettlementService.Infrastructure\SettlementService.Infrastructure.csproj" />
+        <ProjectReference Include="..\SettlementService.Application\SettlementService.Application.csproj"/>
+        <ProjectReference Include="..\SettlementService.Infrastructure\SettlementService.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

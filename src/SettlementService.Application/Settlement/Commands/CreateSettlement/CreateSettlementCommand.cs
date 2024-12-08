@@ -15,28 +15,26 @@ public record CreateSettlementCommand(string BookingTime, string Name) : IReques
 public class CreateSettlementCommandHandler(IApplicationDbContenxt dbContext)
     : IRequestHandler<CreateSettlementCommand, CreateSettlementCommandResponse>
 {
-    public async Task<CreateSettlementCommandResponse> Handle(CreateSettlementCommand request, CancellationToken cancellationToken)
+    public async Task<CreateSettlementCommandResponse> Handle(CreateSettlementCommand request,
+        CancellationToken cancellationToken)
     {
         var requestTime = MilitaryTime.Create(request.BookingTime);
-        var settlementPool = dbContext.Bookings
-                .AsNoTracking()
-                .ToList()
-                .ToSettlementPool();
-            
+        var bookings= await dbContext.Bookings
+            .AsNoTracking()
+            .ToListAsync(cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+        var settlementPool = bookings.ToSettlementPool();
+
         if (settlementPool.IsReservable())
-        {
             throw new RequestConflictException(
-                nameof(CreateSettlementCommand), 
+                nameof(CreateSettlementCommand),
                 "Request Conflict",
                 $"Exceeded maximum of settlement spot at: {requestTime.Value}");
-        }
 
-        var newBooking = new Booking(
-            FullName.Create(request.Name), 
-            new BookingTime(requestTime));
+        var newBooking = new Booking(FullName.Create(request.Name), new BookingTime(requestTime));
 
         dbContext.Bookings.Add(newBooking);
-        
+
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return new CreateSettlementCommandResponse(newBooking.BookingId.ToString());

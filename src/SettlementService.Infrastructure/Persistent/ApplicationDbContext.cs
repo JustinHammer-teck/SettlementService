@@ -1,18 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using SettlementService.Application.Common.Interfaces;
 using SettlementService.Domain.Entities;
 
 namespace SettlementService.Infrastructure.Persistent;
 
-internal sealed class ApplicationDbContext : DbContext, IApplicationDbContenxt
+public sealed class ApplicationDbContext : DbContext, IApplicationDbContenxt
 {
-    public DbSet<Booking> Bookings { get; set; }
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
-    
+
+    public DbSet<Booking> Bookings { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

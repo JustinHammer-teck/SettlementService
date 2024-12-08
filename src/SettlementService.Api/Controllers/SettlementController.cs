@@ -6,7 +6,7 @@ namespace SettlementService.Api.Controllers;
 public class SettlementController : ApiControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<CreateSettlementCommandResponse>> 
+    public async Task<ActionResult<CreateSettlementCommandResponse>>
         BookingSettlement(CreateSettlementCommand command)
     {
         return await Mediator.Send(command);

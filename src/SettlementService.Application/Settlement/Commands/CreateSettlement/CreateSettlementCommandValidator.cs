@@ -4,7 +4,7 @@ using SettlementService.Domain.ValueObjects;
 
 namespace SettlementService.Application.Settlement.Commands.CreateSettlement;
 
-public class CreateSettlementCommandValidator: AbstractValidator<CreateSettlementCommand>
+public class CreateSettlementCommandValidator : AbstractValidator<CreateSettlementCommand>
 {
     public CreateSettlementCommandValidator(
         OfficeHour officeHour, BookingAvailableHour bookingAvailableHour)
@@ -24,17 +24,16 @@ public class CreateSettlementCommandValidator: AbstractValidator<CreateSettlemen
             {
                 var time = MilitaryTime.Create(requestTime);
                 var isInOfficeHour = time >= officeHour.StartTime &&
-                                     time <= officeHour.EndTime; 
+                                     time <= officeHour.EndTime;
                 if (!isInOfficeHour)
-                    context.AddFailure("BookingTime", $"Booking time must be within business hours: {officeHour.StartTime} to {officeHour.EndTime}.");
-                
+                    context.AddFailure("BookingTime",
+                        $"Booking time must be within business hours: {officeHour.StartTime} to {officeHour.EndTime}.");
+
                 var isInBookingAvailableHour = time >= bookingAvailableHour.StartTime &&
                                                time <= bookingAvailableHour.EndTime;
-                if(!isInBookingAvailableHour)
-                    context.AddFailure("BookingTime", $"Latest booking start time is {bookingAvailableHour.EndTime} to ensure completion by {officeHour.EndTime}.");
+                if (!isInBookingAvailableHour)
+                    context.AddFailure("BookingTime",
+                        $"Latest booking start time is {bookingAvailableHour.EndTime} to ensure completion by {officeHour.EndTime}.");
             });
     }
 }
-
-
-
