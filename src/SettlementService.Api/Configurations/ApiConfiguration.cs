@@ -28,7 +28,7 @@ public static class ApiConfiguration
         builder.Services.AddExceptionHandler<GlobalCustomExceptionHandler>();
 
         builder.Logging.ClearProviders();
-        
+
         builder.Logging.AddOpenTelemetry(x => x.AddConsoleExporter());
     }
 }

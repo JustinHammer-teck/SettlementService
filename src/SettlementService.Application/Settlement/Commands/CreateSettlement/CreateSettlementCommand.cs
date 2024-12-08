@@ -19,9 +19,9 @@ public class CreateSettlementCommandHandler(IApplicationDbContenxt dbContext)
         CancellationToken cancellationToken)
     {
         var requestTime = MilitaryTime.Create(request.BookingTime);
-        var bookings= await dbContext.Bookings
+        var bookings = await dbContext.Bookings
             .AsNoTracking()
-            .ToListAsync(cancellationToken: cancellationToken)
+            .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
         var settlementPool = bookings.ToSettlementPool();
 

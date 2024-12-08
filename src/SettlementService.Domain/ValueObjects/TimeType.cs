@@ -81,20 +81,28 @@ public sealed record MilitaryTime : TimeType
 
     public static MilitaryTime Create(string time)
     {
-        return TryCreate(time);
+        if (TryCreate(time, out var militaryTime))
+            return militaryTime;
+
+        throw new UnsupportedTimeTypeException(
+            $"Invalid time format. Expected {Formats.Select(x => x)}, but received {time}");
     }
 
-    public static MilitaryTime TryCreate(string time)
+    public static bool TryCreate(string time, out MilitaryTime militaryTime)
     {
+        militaryTime = default;
+
         if (string.IsNullOrEmpty(time))
             throw new ArgumentException($"'{nameof(time)}' cannot be null or whitespace.", nameof(time));
 
         foreach (var format in Formats)
             if (TimeOnly.TryParseExact(time, format, out var parsedTime))
-                return new MilitaryTime(parsedTime);
+            {
+                militaryTime = new MilitaryTime(parsedTime);
+                return true;
+            }
 
-        throw new UnsupportedTimeTypeException(
-            $"Invalid time format. Expected {Formats.Select(x => x)}, but received {time}");
+        return false;
     }
 
     public override string ToString()

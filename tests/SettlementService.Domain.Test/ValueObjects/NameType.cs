@@ -80,6 +80,35 @@ public class FullNameTests
     }
 
     [Test]
+    public void IsValid_WithValidName_ShouldReturnTrueAndNameParts()
+    {
+        // Arrange
+        var name = "John Doe";
+
+        // Act
+        var result = FullName.IsValid(name, out var nameParts);
+
+        // Assert
+        result.Should().BeTrue();
+        nameParts.Should().ContainInOrder("John", "Doe");
+    }
+
+    [Test]
+    public void IsValid_WithInvalidName_ShouldReturnFalseAndEmptyNameParts()
+    {
+        // Arrange
+        var invalidName = "John";
+
+        // Act
+        var result = FullName.IsValid(invalidName, out var nameParts);
+
+        // Assert
+        result.Should().BeFalse();
+        nameParts.Should().HaveCount(1);
+        nameParts[0].Should().Be("John");
+    }
+
+    [Test]
     public void TryCreate_WithValidSingleStringName_ShouldReturnTrueAndFullName()
     {
         // Arrange
@@ -95,6 +124,18 @@ public class FullNameTests
     }
 
     [Test]
+    public void TryCreate_WithNullValue_ShouldReturnFalseAndNull()
+    {
+        // Arrange
+        // Act
+        var result = FullName.TryCreate(null, out var fullName);
+
+        // Assert
+        result.Should().BeFalse();
+        fullName.Should().BeNull();
+    }
+
+    [Test]
     public void TryCreate_WithInvalidSingleStringName_ShouldReturnFalseAndDefault()
     {
         // Arrange
@@ -106,19 +147,5 @@ public class FullNameTests
         // Assert
         result.Should().BeFalse();
         fullName.Should().BeNull();
-    }
-
-    [Test]
-    public void TryCreate_WithNullOrWhitespaceName_ShouldThrowArgumentException()
-    {
-        // Arrange
-        string nullName = null;
-
-        // Act
-        Action act = () => FullName.TryCreate(nullName, out _);
-
-        // Assert
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("'name' cannot be null or whitespace. (Parameter 'name')");
     }
 }

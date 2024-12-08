@@ -1,6 +1,8 @@
 using FluentValidation;
+using FluentValidation.Results;
 using SettlementService.Domain.Entities;
 using SettlementService.Domain.ValueObjects;
+using ValidationException = SettlementService.Application.Exceptions.ValidationException;
 
 namespace SettlementService.Application.Settlement.Commands.CreateSettlement;
 
@@ -14,15 +16,18 @@ public class CreateSettlementCommandValidator : AbstractValidator<CreateSettleme
             .MaximumLength(50)
             .Custom((requestName, context) =>
             {
-                if (!FullName.TryCreate(requestName, out _))
+                if (!FullName.IsValid(requestName, out _))
                     context.AddFailure("Name", "Invalid name format");
             });
 
         RuleFor(v => v.BookingTime)
-            .NotEmpty()
             .Custom((requestTime, context) =>
             {
-                var time = MilitaryTime.Create(requestTime);
+                if (string.IsNullOrEmpty(requestTime) || !MilitaryTime.TryCreate(requestTime, out var time))
+                    throw new ValidationException([
+                        new ValidationFailure(nameof(CreateSettlementCommand.BookingTime), "Invalid time format")
+                    ]);
+
                 var isInOfficeHour = time >= officeHour.StartTime &&
                                      time <= officeHour.EndTime;
                 if (!isInOfficeHour)

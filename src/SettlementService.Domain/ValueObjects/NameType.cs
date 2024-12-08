@@ -13,27 +13,31 @@ public record FullName : NameType
     public string FirstName { get; private init; } = string.Empty;
     public string LastName { get; private init; } = string.Empty;
 
+    public static bool IsValid(string name, out string[] nameParts)
+    {
+        nameParts = name?.Split(" ") ?? [];
+
+        return !string.IsNullOrWhiteSpace(name) &&
+               nameParts.Length > 1 &&
+               nameParts.All(part => !string.IsNullOrWhiteSpace(part));
+    }
+
     public static bool TryCreate(string name, out FullName fullName)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
-
-        var partialName = name.Split(" ");
-
-        if (partialName.Length < 2)
+        if (IsValid(name, out var nameParts))
         {
-            fullName = default;
-            return false;
+            fullName = new FullName(nameParts[0], nameParts[1]);
+            return true;
         }
 
-        fullName = new FullName(partialName[0], partialName[1]);
-        return true;
+        fullName = default;
+        return false;
     }
 
     public static FullName Create(string name)
     {
-        if (TryCreate(name, out var fullName))
-            return fullName;
+        if (IsValid(name, out var nameParts))
+            return new FullName(nameParts[0], nameParts[1]);
 
         throw new ArgumentException($"Invalid full name format: {name}");
     }

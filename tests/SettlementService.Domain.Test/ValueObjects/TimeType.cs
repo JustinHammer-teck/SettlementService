@@ -132,15 +132,14 @@ public class TimeTypeTests
     }
 
     [Test]
-    public void TryCreate_WithNullOrEmptyString_ShouldThrowArgumentException()
+    public void TryCreate_WithSpaceOrEmptyString_ShouldThrowArgumentException()
     {
         // Arrange
-        string nullTime = null;
         var emptyTime = "";
 
         // Act
-        Action act1 = () => MilitaryTime.TryCreate(nullTime);
-        Action act2 = () => MilitaryTime.TryCreate(emptyTime);
+        var act1 = () => MilitaryTime.TryCreate(null, out _);
+        var act2 = () => MilitaryTime.TryCreate(emptyTime, out _);
 
         // Assert
         act1.Should().Throw<ArgumentException>();
@@ -148,17 +147,16 @@ public class TimeTypeTests
     }
 
     [Test]
-    public void TryCreate_WithInvalidFormat_ShouldThrowUnsupportedTimeTypeException()
+    public void TryCreate_WithInvalidFormat_ShouldReturnFalse()
     {
         // Arrange
         var invalidTime = "invalid-time";
 
         // Act
-        Action act = () => MilitaryTime.TryCreate(invalidTime);
+        var result = MilitaryTime.TryCreate(invalidTime, out _);
 
         // Assert
-        act.Should()
-            .Throw<UnsupportedTimeTypeException>()
-            .WithMessage("Invalid time format*");
+
+        result.Should().Be(false);
     }
 }

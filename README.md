@@ -6,6 +6,10 @@
 - nix | nix-darwin (Optional, if you want to run nix-shell)
 - just (Optional, if you want to run automate task)
 
+## Demo Testing Note
+
+I already create a hack to mimic InMemoryDatabase behavior that clear everything on shutdown.
+
 ## Implementation Note: 
 
 My implementation focusing on showcase Domain Driven Design, application architecture
@@ -34,8 +38,6 @@ Since in this example we didn't focus on the retrieval of data in the applicatio
 ### Future Work
 
 #### Docker support
-
-#### OpenTelemetry
 
 #### Testcontainer
 
