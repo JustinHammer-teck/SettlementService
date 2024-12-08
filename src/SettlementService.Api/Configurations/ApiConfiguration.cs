@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http.Features;
+using OpenTelemetry.Logs;
 using SettlementService.Api.Common;
 
 namespace SettlementService.Api.Configurations;
@@ -26,6 +27,8 @@ public static class ApiConfiguration
 
         builder.Services.AddExceptionHandler<GlobalCustomExceptionHandler>();
 
-        builder.Logging.AddOpenTelemetry();
+        builder.Logging.ClearProviders();
+        
+        builder.Logging.AddOpenTelemetry(x => x.AddConsoleExporter());
     }
 }

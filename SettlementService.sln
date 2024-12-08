@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettlementService.Api", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettlementService.Domain.Test", "tests\SettlementService.Domain.Test\SettlementService.Domain.Test.csproj", "{31950D1E-310A-463A-B9CA-08F70E944383}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettlementService.Application.Test", "SettlementService.Application.Test\SettlementService.Application.Test.csproj", "{383F6A97-CE47-45E3-A854-C95823FD6A7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettlementService.Application.Test", "tests\SettlementService.Application.Test\SettlementService.Application.Test.csproj", "{383F6A97-CE47-45E3-A854-C95823FD6A7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
