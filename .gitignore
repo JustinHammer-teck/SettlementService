@@ -6,8 +6,6 @@
 # User-specific files
 .direnv/
 .envrc
-flake.nix
-flake.lock
 nohup.out
 
 .config/

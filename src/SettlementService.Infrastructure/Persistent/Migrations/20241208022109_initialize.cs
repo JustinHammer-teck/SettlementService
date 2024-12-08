@@ -17,7 +17,8 @@ namespace SettlementService.Infrastructure.Persistent.Migrations
                 {
                     BookingId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", nullable: false),
-                    BookingTime = table.Column<string>(type: "TEXT", nullable: false)
+                    BookingTime_Hour = table.Column<string>(type: "TEXT", nullable: false),
+                    BookingTime_Time = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

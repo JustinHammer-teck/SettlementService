@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SettlementService.Domain.Entities;
+using SettlementService.Domain.Exceptions;
 using SettlementService.Domain.ValueObjects;
 
 namespace SettlementService.Infrastructure.Persistent.Configurations;
@@ -12,7 +13,7 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.ToTable("Booking");
         
         builder.HasKey(b => b.BookingId);
-
+        
         builder.Property(b => b.BookingId)
             .IsRequired()
             .HasConversion(
@@ -24,40 +25,49 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .HasColumnType("varchar(50)")
             .IsRequired();
         
-        builder.Property(b => b.BookingTime)
-            .HasConversion(
-                time => TimeTypeToString(time), time => StringToTimeType(time))
-            .IsRequired();
+        builder.ComplexProperty(s => s.BookingTime, builder =>
+        {
+            builder.Property(x => x.Time)
+                .HasConversion(time => TimeTypeToString(time), time => StringToTimeType(time))
+                .IsRequired();
+            
+            builder.Property(x => x.Hour)
+                .HasConversion(hour => hour.ToString(), hour => int.Parse(hour))
+                .IsRequired();
+        });
     }
-    
+
     private string TimeTypeToString(TimeType timeType) =>
         timeType switch
         {
             MilitaryTime militaryTime => militaryTime.ToString(),
-            _ => throw new ArgumentException($"Unsupported TimeType: {timeType.GetType().Name}")
+            _ => throw new UnsupportedTimeTypeException($"Invalid TimeType with type: {timeType.GetType()}")
         };
-
+    
     private TimeType StringToTimeType(string time)
     {
-        var formats = new Dictionary<string, Func<string, TimeType>>
+        /*
+         * I Can create a list of Func like this from Assembly to follow Open/Close principle
+         * but this implementation is good enough for this demo
+         */
+        var formatStrategies = new Dictionary<string,Func<string, TimeType>>
         {
-            {"HH:mm" , MilitaryTime.Create}
+            { MilitaryTime.DefaultFormat, MilitaryTime.Create }
         };
 
-        var result = formats
-            .Where(strategy => 
-                TimeOnly.TryParseExact(time, strategy.Key, out _))
-            .Select(x => 
-                x.Value(time))
-            .FirstOrDefault();
+        foreach (var (format, cast) in formatStrategies)
+        {
+            if (TimeOnly.TryParseExact(time, format, out _))
+                return cast(time);
+        }           
         
-        return result ?? throw new ArgumentException($"Unsupported time format for time of value : {time}"); 
+        throw new UnsupportedTimeTypeException($"Unsupported time format for time of value : {time}"); 
     }
-
+    
     private string NameTypeToString(NameType nameType) =>
         nameType switch
         {
             FullName fullName => $"{fullName.FirstName} {fullName.LastName}",
-            _ => throw new ArgumentException($"Unsupported Name Type of type: {nameType}")
+            _ => throw new UnsupportedNameTypeException($"Unsupported Name Type of type: {nameType}")
         };
 }

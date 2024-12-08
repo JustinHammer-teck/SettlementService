@@ -18,6 +18,4 @@ internal sealed class ApplicationDbContext : DbContext, IApplicationDbContenxt
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
-    
-    
 }
