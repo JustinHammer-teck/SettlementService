@@ -10,6 +10,16 @@
 
 I already create a hack to mimic InMemoryDatabase behavior that clear everything on shutdown.
 
+Sample Request:
+
+> POST http://localhost:5209/api/Settlement
+
+Sample Request Body
+
+> { "bookingTime": "09:00", "name": "John Doe" }
+
+Name value: is enforce to fullname with firstname and lastname.
+
 ## Implementation Note: 
 
 My implementation focusing on showcase Domain Driven Design, application architecture

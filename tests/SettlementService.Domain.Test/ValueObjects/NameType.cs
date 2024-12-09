@@ -109,6 +109,18 @@ public class FullNameTests
     }
 
     [Test]
+    public void IsValid_WithNull_ShouldReturnFalseAndEmptyNameParts()
+    {
+        // Arrange
+        // Act
+        var result = FullName.IsValid(null, out var nameParts);
+
+        // Assert
+        result.Should().BeFalse();
+        nameParts.Should().HaveCount(0);
+    } 
+    
+    [Test]
     public void TryCreate_WithValidSingleStringName_ShouldReturnTrueAndFullName()
     {
         // Arrange
